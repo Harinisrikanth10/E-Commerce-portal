@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Simple E-Commerce</title>
+  <style>
+    body { font-family: Arial; margin: 0; padding: 0; }
+    nav { background: #000; color: white; padding: 10px; }
+    nav a { color: white; margin-right: 15px; text-decoration: none; }
+    .box { border: 1px solid #ccc; padding: 15px; margin: 15px; }
+    input { width: 90%; padding: 6px; margin: 5px 0; }
+    button { padding: 6px 12px; margin-top: 8px; }
+  </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+  <a href="#home">Home</a>
+  <a href="#products">Products</a>
+  <a href="#contact">Contact Us</a>
+  <a href="#about">About Us</a>
+</nav>
+
+<!-- Home -->
+<div id="home" class="box">
+  <h2>Welcome to Simple E-Commerce</h2>
+</div>
+
+<!-- Registration -->
+<div class="box">
+  <h3>Register</h3>
+  <input id="rName" placeholder="Enter Name">
+  <input id="rEmail" placeholder="Enter Email">
+  <input id="rPass" type="password" placeholder="Enter Password">
+  <button onclick="register()">Register</button>
+  <p id="regMsg"></p>
+</div>
+
+<!-- Login -->
+<div class="box">
+  <h3>Login</h3>
+  <input id="lEmail" placeholder="Enter Email">
+  <input id="lPass" type="password" placeholder="Enter Password">
+  <button onclick="login()">Login</button>
+  <p id="loginMsg"></p>
+</div>
+
+<!-- Products -->
+<div id="products" class="box">
+  <h3>Products</h3>
+  <p>1. Mobile - ₹50000 <button onclick="addOrder('Mobile')">Buy</button> <button onclick="addWishlist('Mobile')">Wishlist</button></p>
+  <p>2. Laptop - ₹80000 <button onclick="addOrder('Laptop')">Buy</button> <button onclick="addWishlist('Laptop')">Wishlist</button></p>
+</div>
+
+<!-- Wishlist -->
+<div class="box">
+  <h3>Wishlist</h3>
+  <p id="wishlist"></p>
+</div>
+
+<!-- Orders -->
+<div class="box">
+  <h3>Orders</h3>
+  <p id="orders"></p>
+</div>
+
+<!-- Reviews -->
+<div class="box">
+  <h3>Comments & Reviews</h3>
+  <textarea id="reviewText" placeholder="Write a comment"></textarea><br>
+  <button onclick="addReview()">Post</button>
+  <p id="reviewList"></p>
+</div>
+
+<!-- Customer Care -->
+<div id="contact" class="box">
+  <h3>Customer Care</h3>
+  <input id="cName" placeholder="Your Name">
+  <input id="cIssue" placeholder="Your Issue">
+  <button onclick="contactUs()">Submit</button>
+  <p id="contactMsg"></p>
+</div>
+
+<!-- About -->
+<div id="about" class="box">
+  <h3>About Us</h3>
+  <p>Simple demo E-Commerce website.</p>
+</div>
+
+<script>
+  let users = [];
+  let currentUser = null;
+  let wishlist = [];
+  let orders = [];
+  let reviews = [];
+
+  function register() {
+    let name = rName.value;
+    let email = rEmail.value;
+    let pass = rPass.value;
+
+    if (!name || !email || !pass) {
+      regMsg.innerHTML = "Fill all fields!";
+      return;
+    }
+    users.push({name, email, pass});
+    regMsg.innerHTML = "Registered Successfully!";
+  }
+
+  function login() {
+    let email = lEmail.value;
+    let pass = lPass.value;
+
+    let user = users.find(u => u.email === email && u.pass === pass);
+    if (user) {
+      currentUser = user;
+      loginMsg.innerHTML = "Login Successful!";
+    } else {
+      loginMsg.innerHTML = "Invalid Credentials!";
+    }
+  }
+
+  function addWishlist(item) {
+    if (!currentUser) { alert("Login first!"); return; }
+    wishlist.push(item);
+    wishlistEl();
+  }
+
+  function wishlistEl() {
+    wishlist.innerText = wishlist.join(", ");
+  }
+
+  function addOrder(item) {
+    if (!currentUser) { alert("Login first!"); return; }
+    orders.push(item);
+    ordersEl();
+  }
+
+  function ordersEl() {
+    orders.innerText = orders.join(", ");
+  }
+
+  function addReview() {
+    if (!currentUser) { alert("Login first!"); return; }
+    reviews.push(reviewText.value);
+    reviewList.innerText = reviews.join(" | ");
+    reviewText.value = "";
+  }
+
+  function contactUs() {
+    contactMsg.innerText = "Issue submitted!";
+  }
+</script>
+
+</body>
+</html>
